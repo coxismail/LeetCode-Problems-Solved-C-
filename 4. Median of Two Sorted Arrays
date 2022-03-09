@@ -1,0 +1,64 @@
+  public  double FindMedianSortedArrays(int[] nums1, int[] nums2)
+        {
+            decimal Result = 0.0000M; // Default Result
+            if ((nums1.Length >= 0 && nums1.Length <= 1000) && (nums2.Length >= 0 && nums2.Length <= 1000)) // Check array length condition
+            {
+                var data = new List<int>(); // Empty list of integer will store from provided array after validate
+                for (int i = 0; i < nums1.Length; i++) // 
+                {
+                    if (nums1[i] >= 0.000001)
+                    {
+                        data.Add(nums1[i]);
+                    }
+                    if (i < nums2.Length)
+                    {
+                        if (nums2[i] <= 1000000)
+                        {
+                            data.Add(nums2[i]);
+                        }
+                    }
+                }
+                if (nums1.Length < nums2.Length)
+                {
+                    for (int i = nums1.Length; i < nums2.Length; i++)
+                    {
+                        if (nums2[i] <= 1000000)
+                        {
+                            data.Add(nums2[i]);
+                        }
+                    }
+                }
+
+                var ReOrderData = data.OrderBy(f => f).ToList();
+                var lenlist = ReOrderData.Count();
+   
+                if (lenlist == 1)
+                {
+                    Result = ReOrderData.First() * 1.0000M;
+                }
+                else if (lenlist == 2)
+                {
+                    Result = (decimal) ReOrderData.Sum(f=>f) / 2 * 1.0000M;
+                }
+                else if(lenlist>2)
+                {
+                    if (lenlist % 2 == 0)
+                    {
+                        var MaxIndex = (lenlist / 2);
+                        var MinIndex = MaxIndex - 1;
+                        var item1 = ReOrderData.ToArray()[MinIndex];
+                        var item2 = ReOrderData.ToArray()[MaxIndex];
+                         Result = (decimal)(item1 + item2) / 2 *1.0000M;
+
+                    }
+                    else
+                    {
+                        var neddfin = (lenlist - 1) / 2;
+                        Result = ReOrderData.ToArray()[neddfin] * 1.0000M;
+                    
+                    }
+                }
+               
+            }
+            return Convert.ToDouble(Result);
+        }
