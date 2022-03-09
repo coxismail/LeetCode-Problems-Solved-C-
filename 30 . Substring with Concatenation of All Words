@@ -1,0 +1,86 @@
+ public IList<int> FindSubstring(string s, string[] words) {
+               var result = new List<int>();
+            if (string.IsNullOrEmpty(s) || words.Length <= 0 || words == null)
+            {
+                return result;
+            }
+
+            int wordsArrayLength = words.Length;
+            int singleWordLength = words[0].Length;
+            int ConcatedWordLength = wordsArrayLength * singleWordLength;
+            if (wordsArrayLength == 1)
+            {
+                for (int t = s.IndexOf(words[0]); t > -1; t = s.IndexOf(words[0], t + 1))
+                {
+                    result.Add(t);
+                }
+                return result;
+            }
+
+            var givenwords = new Dictionary<string, int>();
+            for (int i = 0; i < words.Length; i++)
+            {
+                if (givenwords.ContainsKey(words[i]))
+                {
+                    givenwords[words[i]] += 1;
+                }
+                else
+                {
+                    givenwords.Add(words[i], 1);
+                }
+            }
+            var matchPart = new List<string>();
+
+            for (int i = 0; i <= s.Length - ConcatedWordLength; i++)
+            {
+                var target = s.Substring(i, ConcatedWordLength);
+                int index = 0;
+                int start = 0;
+                Dictionary<string, int> catchword = new Dictionary<string, int>();
+                while (index < wordsArrayLength)
+                {
+                    var ssss = target.Substring(start, singleWordLength);
+                    if (!givenwords.ContainsKey(ssss))
+                    {
+                        break;
+                    }
+                    if (catchword.ContainsKey(ssss))
+                    {
+                        catchword[ssss] += 1;
+                    }
+                    else
+                    {
+                        catchword.Add(ssss, 1);
+                    }
+                    start += singleWordLength;
+                    index++;
+                }
+
+
+                if (catchword.Count == givenwords.Count)
+                {
+                    int coundown = 0;
+                    foreach (var item in catchword)
+                    {
+                        if (catchword[item.Key] != givenwords[item.Key])
+                        {
+                            break;
+                        }
+                        coundown += 1;
+                        
+                    }
+                    if (coundown == givenwords.Count)
+                    {
+                        matchPart.Add(target);
+                    }
+                }
+            }
+            foreach (var item in matchPart.Distinct())
+            {
+                for (int st = s.IndexOf(item); st > -1; st = s.IndexOf(item, st + 1))
+                {
+                    result.Add(st);
+                }
+            }
+            return result;
+        } 
